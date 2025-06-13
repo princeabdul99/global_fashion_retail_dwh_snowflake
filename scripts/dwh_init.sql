@@ -8,6 +8,10 @@ Script Purpose:
   and 'global_fashion_retail_query_wh'after checking if it already exists.
   * global_fashion_retail_load_wh -> used for data ingestion & ETL
   * global_fashion_retail_query_wh -> used by analyst, BI, ad hoc
+
+  WARNING:
+  Running this script should be performed only by the PM. Proceed with caution and ensure you
+  have proper permission before running this script.
 */
 
 CREATE OR ALTER WAREHOUSE global_fashion_retail_load_wh

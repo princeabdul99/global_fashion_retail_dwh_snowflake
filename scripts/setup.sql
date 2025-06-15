@@ -81,5 +81,27 @@ GRANT CREATE WAREHOUSE ON ACCOUNT TO ROLE "GFR_PM_ROLE";
 GRANT CREATE DATABASE ON ACCOUNT TO ROLE "GFR_PM_ROLE";
 
 
+/*
+** Create a Cloud Storage Integration in snowflake
+* Note: 
+* Only account administrators (users with the ACCOUNTADMIN role) or a role with the 
+* global CREATE INTEGRATION privilege can execute this SQL command.
+*/
+use role ACCOUNTADMIN;
+
+CREATE STORAGE INTEGRATION GFR_INTEGRATION
+  TYPE = EXTERNAL_STAGE
+  STORAGE_PROVIDER = 'S3'
+  ENABLED = TRUE
+  STORAGE_AWS_ROLE_ARN = '<replace-with-aws-role-arn>'
+  STORAGE_ALLOWED_LOCATIONS = ('*');
+
+
+ -- Retrieve the AWS IAM user for the snowflake account
+ DESC INTEGRATION GFR_INTEGRATION;
+
+ /* Granting usage previledge on the storage integration */
+ GRANT USAGE ON INTEGRATION GFR_INTEGRATION TO ROLE "GFR_PM_ROLE";
+ GRANT USAGE ON INTEGRATION GFR_INTEGRATION TO ROLE "GFR_DEV_TEAM";
 
 

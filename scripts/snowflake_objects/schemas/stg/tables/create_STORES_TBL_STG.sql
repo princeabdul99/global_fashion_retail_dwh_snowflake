@@ -6,10 +6,8 @@
  */
  
 USE WAREHOUSE global_fashion_retail_load_wh;
-use database silver_db;
-USE SCHEMA STG;
 
-CREATE OR REPLACE TABLE STORES_TBL_STG (
+CREATE OR REPLACE TABLE silver_db.STG.STORES_TBL_STG (
     storeid int,
     country varchar,
     city varchar,

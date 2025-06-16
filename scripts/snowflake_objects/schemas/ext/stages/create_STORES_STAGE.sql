@@ -14,7 +14,7 @@
 
 CREATE OR REPLACE STAGE STORES_STAGE
     STORAGE_INTEGRATION = GFR_INTEGRATION
-    URL = 's3://bucket-global-fashion-retail/'
+    URL = 's3://bucket-global-fashion-retail/stores/'
     FILE_FORMAT = CSV_FORMAT;
 
 -- Enabling DIRECTORY table for stage metadata

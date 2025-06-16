@@ -50,7 +50,7 @@ CREATE USER gfr_ba_de PASSWORD = 'Test@12$4' COMMENT = 'this is a ba-de user' MU
 CREATE USER gfr_ba_gb PASSWORD = 'Test@12$4' COMMENT = 'this is a ba-gb user' MUST_CHANGE_PASSWORD = FALSE;
 CREATE USER gfr_ba_fr PASSWORD = 'Test@12$4' COMMENT = 'this is a ba-fr user' MUST_CHANGE_PASSWORD = FALSE;
 CREATE USER gfr_ba_es PASSWORD = 'Test@12$4' COMMENT = 'this is a ba-es user' MUST_CHANGE_PASSWORD = FALSE;
-CREATE USER gfr_ba_pt PASSWORD = 'SILVER_DB' COMMENT = 'this is a ba-pt user' MUST_CHANGE_PASSWORD = FALSE;
+CREATE USER gfr_ba_pt PASSWORD = 'Test@12$4' COMMENT = 'this is a ba-pt user' MUST_CHANGE_PASSWORD = FALSE;
 
 
 /*

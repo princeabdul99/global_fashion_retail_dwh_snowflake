@@ -20,16 +20,3 @@ CREATE OR REPLACE TABLE STORES_EXT (
     source_file_name varchar,
     load_ts timestamp
 );
-
-/* Loading data from external stage into a staging table */
-copy into EXT.STORES_EXT
-from (
-    select $1, $2, $3, $4, $5, $6, $7, $8, metadata$filename, current_timestamp()
-    from @STORES_STAGE
-)
-on_error = abort_statement;
---on_error = continue;
---purge = true;
-
-
---TRUNCATE TABLE STORES_EXT;

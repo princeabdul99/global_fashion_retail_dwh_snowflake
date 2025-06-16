@@ -29,3 +29,11 @@ global_fashion_retail_dwh_snowflake/
 └── requirements.txt                    # Dependencies and requirements for the project
 ```
 ---
+## Running Python Code
+```
+- **Install Environment**: In Terminal:
+    cd csv_file_splitter
+    run python -m venv venv
+- **Activate Envr (windows)**: run venv\Scripts\Activate 
+- **Run code**: python split_by_date.py
+```

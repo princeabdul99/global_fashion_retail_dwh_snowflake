@@ -1,0 +1,100 @@
+
+================ STAGGING-TO-TRANFORMATION ====================
+Ways to add data to table that stores historical data.
+* Using MERGE statement to add data from the stagging table into target table
+* Append-Only Strategy
+* Building SCD (Slowly Changing Dimension) type 2 historical changes
+
+================ TRANFORMATION ====================
+Ways to transform data
+* Materialized Views
+* Dynamic Tables
+
+Note: Tasks are often combined with streams that detect changes in source data.
+
+Snowflake Features
+* Snowpipe : Used in data pipeline for continuous data ingestion
+* Dynamic tables: For continuous data transformation
+
+================ Comparing Bulk and continuous data ingestion ====================
+Bulk Data Loading: Refers to regularly scheduled data pipelines that ingest data into Snowflake tables. 
+                  Useful when new data arrives at known intervals or when data
+                  consumers don't require the latest data but can work data from
+                  the previous day.
+
+Continuous Data Ingestion 
+ Micro-batching : When data is required frequently, data pipeline can be scheduled to 
+                  run within shorter intervals. e.g. every hour, or every few minutes.       
+
+ An alternative to scheduling data pipeline in micro-batching is the Snowpipe.   
+
+ Snowpipe uses COPY command to load data and it is scheduled by event trigger unlike micro-batching that is scheduled by time interval.
+    - To function correctly, it can be configured with cloud messagin, which sends 
+    a notification when new files arrive, triggering the pipeline execution.
+
+================ SNOWPIPE WITH CLOUD MESSAGING ====================
+Different ways how Snowpipe can be notified that new files are available in cloud storage
+* By integrating with cloud messaging.
+* By calling Snowpipe REST endpoints.
+
+Cloud messaging also called event notifications.
+~ Event notification informs Snowpipe of the arrival of new data files in the cloud storage
+  that it must ingest.
+  - Event notifications are stored in a queue and are used by Snowpipe to identify new files.
+
+  Note: Event notification contains only the metadata, such as the names of the files that arrived
+        in the cloud.
+        The files remains in the cloud storage container until Snowpipe ingest them.
+
+
+     Cloud Storage Event Notification that supports loading data continuously in snowflake.
+     - Amazon S3: SQS (Simple Queue Service)
+     - Microsoft Azure blob storage: Event Grid Messages for blob storage events.
+     - Google Cloud Storage: Pub/Sub messages for Google Cloud Storage events    
+
+
+========================= DYNAMIC TABLES ====================
+Dynamic Tables => The building block for declarative data transformation pipelines. 
+ - Enables automated data transformation.
+
+ Note:
+   Instead of creating target table and inserting or merging transformed data into table, 
+   you can create dynamic tables to materialize the results of a query specified in the
+   dynamic table definition.
+   - You dont have to schedule or manage tasks that populate data in the dynamic table 
+      because snowflake handles the maintenance in the background.
+
+   *** Restrictions in dynamic tables ***
+   - Not allowing stored procedures
+   - Nondeterministics functions
+   - external functions
+
+ Although, the have fewer restrictions than Materialized views and apply to many different use cases.                           
+
+ ========================= SLOW CHANGING DIMENSION (SCD) ====================
+ SCD => a widely used desig pattern for maintaining historical changes in data.
+      - Useful when the source system provides infomation about the last time the data changed.
+
+  Data warehouse usually work with SCD2 pattern.
+   - Each record in a table contains two timestamp columns that indicate the time interval
+     during which the record is valid. If the record is currently valid and we dont known
+     when the validity expires, we use a date value far in the future to denote the end of 
+     the validity interval.     
+
+APPEND-ONLY Strategy => Rows are inserted into the table when data changes.
+   - Instead of the a validity interval indicated by the start and end timestamp, 
+     only the start timestamp is stored in each row in the table.   
+
+   Note:
+      - The Append-only strategy preserves history, like in the SCD2 pattern, but doesn't
+       require updates, making the logic simpler and easier to maintain.    
+
+ ========================= DESIGNING INDEMPOTENT DATA PIPELINE ==================== 
+ Designing idempotent pipelines means they should result in the same data without
+ duplicates, gaps or inconsistencies, even when the pipeline is executed multiple times.
+
+ Guidelines to follow when designing idempotent pipelines
+ - Merge data into target tables based on unique indentifiers.
+ - Avoid duplication by calculating hash values of rows in table and checking that
+   rows with the same hash value are not ingested again.
+ - Ingest data that has been created or changed after the latest ingestion timestamp.   

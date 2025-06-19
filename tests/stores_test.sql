@@ -41,16 +41,16 @@ FROM STORES_EXT;
 USE DATABASE SILVER_DB;
 USE SCHEMA STG;
 // Querying STORES_STG staging table
-select * from silver_db.STG.STORES_TBL_STG;
+select TOP 100 * from silver_db.STG.STORES_TBL_STG;
 
 // Task 1: What is the total number of employees in each country?
 // Task 2: What is the total number of stores in each country?
 SELECT 
      country,  sum(numberofemployees) as total_employees, count(storename) as total_store
-FROM STORES_TBL_STG
+FROM silver_db.STG.STORES_TBL_STG
 GROUP BY country;
 
 // Total number of employee and stores
 SELECT 
     sum(numberofemployees) as total_employees, count(storename) as total_store
-FROM STORES_TBL_STG;
+FROM silver_db.STG.STORES_TBL_STG;

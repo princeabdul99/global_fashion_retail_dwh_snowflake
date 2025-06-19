@@ -1,7 +1,36 @@
 USE WAREHOUSE global_fashion_retail_load_wh;
 MERGE INTO silver_db.stg.TRANSACTIONS_TBL_STG tgt
 USING (
-    SELECT * 
+    SELECT 
+        ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS id,
+        invoiceid,
+        line,
+        customerid,
+        productid,
+        CASE WHEN size IS NULL THEN 'n/a' 
+                ELSE size
+        END AS size,
+        CASE WHEN color IS NULL THEN 'n/a' 
+                ELSE color
+        END AS color,
+        unitprice,
+        quantity,
+        date,
+        discount,
+        linetotal,
+        storeid,
+        employeeid,
+        currency,
+        currencysymbol, 
+        CASE WHEN RIGHT(sku, 2) = '--' THEN LEFT(sku, LEN(sku) -2)
+            WHEN RIGHT(sku, 1) = '-' THEN LEFT(sku, LEN(sku) -1)
+            ELSE sku
+        END AS sku,    
+        transactiontype,
+        paymentmethod,
+        invoicetotal,
+        source_file_name, 
+        load_ts 
     FROM bronze_db.ext.TRANSACTIONS_STREAM
 ) stg
 ON tgt.invoiceid = stg.invoiceid

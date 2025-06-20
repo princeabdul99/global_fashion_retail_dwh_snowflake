@@ -69,7 +69,27 @@ Dynamic Tables => The building block for declarative data transformation pipelin
    - Nondeterministics functions
    - external functions
 
- Although, the have fewer restrictions than Materialized views and apply to many different use cases.                           
+ Although, the have fewer restrictions than Materialized views and apply to many different use cases.
+
+  ----- Deciding When to Use Dynamic Tables. -------
+  You can use dynamic tables when:
+  * You don't want the complexity of creating, consuming, and scheduling streams.
+  * You don't need query constructs unsupported in dynamic tables, such as non-deterministic
+    functions, external functions, or queries that read from external tables or materialized views.
+  * You don't need schedule control of when your data refreshes, and you accept the target data
+    lag in your pipeline.
+  * You want to materialize the results of a query that joins multiple table.
+  * You want to perform multiple data transformation steps that follow sequentially in a data pipeline.
+
+  *** Note:
+        Remember that you can't create a materialize view based on a query that joins multiple tables, 
+        but you can create a dynamic table instead.    
+
+
+  ---- When Not to Use Dynamic Tables ----
+  You shouldn't use dynamic tables in data pipelines where:
+  * You want to control the schedule when data refreshes.
+  
 
  ========================= SLOW CHANGING DIMENSION (SCD) ====================
  SCD => a widely used desig pattern for maintaining historical changes in data.

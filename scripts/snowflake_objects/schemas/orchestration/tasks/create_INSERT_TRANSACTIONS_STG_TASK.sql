@@ -1,4 +1,6 @@
 USE WAREHOUSE global_fashion_retail_load_wh;
+USE DATABASE SILVER_DB;
+USE SCHEMA STG;
 MERGE INTO silver_db.stg.TRANSACTIONS_TBL_STG tgt
 USING (
     SELECT 

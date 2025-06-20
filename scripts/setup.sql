@@ -29,8 +29,8 @@ GRANT ROLE "GFR_ANALYST" TO ROLE "GFR_PM_ROLE";
 /*
 ** Example: Create some users
 * gfr_pm - the project manager user
-* gfr_dev01 - the data enginer user
-* gfr_ba_lead - the business analyst lead
+* gfr_dev_lead - the data enginer team lead
+* gfr_ba_lead - the business analyst team lead
 * gfr_ba_us - the analyst for United State region
 * gfr_ba_cn - the analyst for China region
 * gfr_ba_de - the analyst for Germany region
@@ -42,7 +42,7 @@ GRANT ROLE "GFR_ANALYST" TO ROLE "GFR_PM_ROLE";
 USE ROLE USERADMIN;
 
 CREATE USER gfr_pm PASSWORD = 'Test@12$4' COMMENT = 'this is a pm user' MUST_CHANGE_PASSWORD = FALSE;
-CREATE USER gfr_dev01 PASSWORD = 'Test@12$4' COMMENT = 'this is a dev-01 user' MUST_CHANGE_PASSWORD = FALSE;
+CREATE USER gfr_dev_lead PASSWORD = 'Test@12$4' COMMENT = 'this is a dev lead user' MUST_CHANGE_PASSWORD = FALSE;
 CREATE USER gfr_ba_lead PASSWORD = 'Test@12$4' COMMENT = 'this is a ba lead user' MUST_CHANGE_PASSWORD = FALSE;
 CREATE USER gfr_ba_us PASSWORD = 'Test@12$4' COMMENT = 'this is a ba-us user' MUST_CHANGE_PASSWORD = FALSE;
 CREATE USER gfr_ba_cn PASSWORD = 'Test@12$4' COMMENT = 'this is a ba-cn user' MUST_CHANGE_PASSWORD = FALSE;
@@ -60,7 +60,7 @@ USE ROLE SECURITYADMIN;
 
 GRANT ROLE "GFR_PM_ROLE" TO USER gfr_pm;
 
-GRANT ROLE "GFR_DEV_TEAM" TO USER gfr_dev01;
+GRANT ROLE "GFR_DEV_TEAM" TO USER gfr_dev_lead;
 
 GRANT ROLE "GFR_ANALYST" TO USER gfr_ba_lead;
 GRANT ROLE "GFR_ANALYST" TO USER gfr_ba_us;

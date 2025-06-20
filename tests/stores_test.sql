@@ -1,4 +1,4 @@
-USE WAREHOUSE GLOBAL_FASHION_RETAIL_LOAD_WH;
+USE WAREHOUSE GLOBAL_FASHION_RETAIL_LOAD_WH_XSMALL;
 USE DATABASE BRONZE_DB;
 USE SCHEMA EXT;
 
@@ -7,7 +7,7 @@ select *
 from directory (@STORES_STAGE);
 
 --  Testing: View list of files in the external stage
-list @STORES_STAGE
+list @STORES_STAGE;
 
 /* View load history for the STORES_EXT */
 select *

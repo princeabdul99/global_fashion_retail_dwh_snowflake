@@ -125,13 +125,14 @@ WHERE TRANSACTIONTYPE = 'Return';
 // Task 3: Create a separate sales table for invoice total
 // Task 4: Create a separate return table for invoice total
 -- ** Challenge: Table should have only invoicetotal per transaction  
-    SELECT TOP 100 *
+    SELECT *
     FROM (
         SELECT
         *,
         ROW_NUMBER() OVER (PARTITION BY invoiceid ORDER BY date desc) as flag_last,
         FROM silver_db.STG.TRANSACTIONS_TBL_STG
-    ) t WHERE flag_last = 1 AND t.transactiontype = 'Sale';
+    ) t ;
+    //WHERE flag_last = 1 AND t.transactiontype = 'Sale';
 
     SELECT TOP 100 *
     FROM (
@@ -147,3 +148,12 @@ WHERE TRANSACTIONTYPE = 'Return';
     FROM silver_db.STG.TRANSACTIONS_TBL_STG
     WHERE transactiontype = 'Sale'
     GROUP BY currency;       
+    
+    
+ //================== DWH LAYER ===========================
+// Business Question: What is the total sale by each country?
+SELECT TOP 10
+    sum(invoicetotal) as total_amount, 
+    currency 
+FROM gold_db.DWH.TRANSACTIONS_TBL
+GROUP BY currency;

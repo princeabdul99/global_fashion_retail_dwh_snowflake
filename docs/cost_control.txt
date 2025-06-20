@@ -1,0 +1,104 @@
+
+====== BUILDING COST EFFECTIVE DATA PIPELINE  =========
+One of the responsibilities of Data engineer is to monitor warehouse consumption and
+use the finding to strike a good balance between improving performance and controlling costs.
+
+ Note: 
+ - Better performance may result in a higher cost.
+ example:
+    * Upgrading a virtual warehouse to a larger size means better performance, but the
+      cost of this can quickly add up.
+    * Long-running queries, poor performance could result in a higher cost because the 
+      query causes the virtual warehouse to be active longer.
+
+ ** How to resize virtual warehouse to optimize performance?
+ ** How to minimize spilling during query execution and use persisted query results.?
+ ** Strategies to reduce query queuing and concurrently running queries.  
+
+ Snowflake uses a consumption-based pricing model, where users pay for storage and compute resources.
+ - The total cost is calculated as the sum of the costs in the following:
+    * Compute Resource Cost.
+    * Storage Resource Cost.
+    * Data Transfer Resource Cost. (Snowflake does not charge for ingesting data but it does for exporting data) 
+
+   Comupte Resource Cost
+    Snowflake compute resources include user-managed compute resources represented by virtual warehouses and
+    Snowflake-managed resources. The total cost for using compute resources is calculated as the sum of costs in 
+    the ff:
+        - virtual warehouse compute:
+            -- operate independently and can be scaled up or down based on workload requirements.
+            -- snowflake bill virtual warehouses for the time they are actively working but not for suspended time.
+            -- The billing is on a per-second basis with 60seconds minimum.
+
+        - serverless compute:
+            -- search optimization, continuous data loading with Snowpipe or database replication and failover use
+               snowflake-managed compute resources rather than user-managed virtual warehouse.
+            -- Snowflake automatically resizes and scales these resources up or down as needed.
+
+        - cloud Services compute:
+            -- cloud services layer perform services such as authentication, metadata management, query parsing, 
+               serving cached data etc.
+            -- Snowflake bills for the Comupute resources in this layer only if they exceed 10 percent of the total
+               daily compute consumption.   
+
+
+  Virtual Warehouse Credits
+   Snowflake virtual warehouse is characterized by its size and additional properties that define and automate warehouse
+   activity. The warehouse size determine the compute resources for executing queries and other processing operations. The
+   cost of the processing time spent by each virtual warehouse is measured in credits according to its size.
+
+                                         snowflake virtual warehouse sizes and their credits consumption per hour 
+                            ______________________________________________________________________________________________________                 
+   Virtual warehouse size  |   X-small | small  | Medium | Large | X-Large | 2X-Large | 3X-Large | 4X-Large | 5X-Large | 6X-Large |
+                           |___________|________|________|_______|_________|__________|__________|__________|__________|__________|  
+        Credits per hour   |      1    |   2    |   4    |   8   |     16  |    32    |    64    |    128   |   256    |    512   |      
+                           |___________|________|________|_______|_________|__________|__________|__________|__________|__________|  
+
+
+A general rule of thumb when selecting an initial warehouse size, as recommended in snowflake, is:
+    * In small-scale development and test environments, choose smaller warehouse sizes such as extra small, small, or Medium.
+    * In large-scale production environments, choose larger warehouse sizes such as large, extra large or larger.
+
+ - After choosing an appropriate warehouse size, you should continue to monitor performance and credits consumption.
+   You can always change the size of a warehouse as your workloads change over time.
+
+
+--- OPTIMIZING QUERY PERFORMANCE TO REDUCE SPILLING  -----
+Spilling happens when a warehouse runs out of memory while executing a query, causing it to write data to local disk storage.
+
+** Note:
+    To improve query performance due to spilling, remember that spilling often caused by grouping and sorting in queries
+    that select data from large table. If posible, try to rewrite such queries to reduce amount of data they must process.
+
+    Ex: Limiting the result set by using a filtering condition that selects fewer records can reduce spilling. 
+
+  Generally,you shouldn't increase the warehouse size to accommodate the requirements of a single query or a single user.
+  Always consider the complete workload.  
+
+--- OPTIMIZING PERFORMANCE WITH DATA CACHING  -----  
+Data caching is a process that stores copies of data in a temporary storage location with fast access, so that data can be
+retrieved faster than from its original storage location.
+
+--- UTILIZING THE WAREHOUSE CACHE EFFICIENTLY ----
+The virtual warehouse cache is available when the warehouse is running and dropped when warehouse is suspended. This explains
+why some queries execute slower when the warehouse is initially started. After the warehouse is active, query performance
+improves when queries are executed over time, and the data from the underlying tables is copied into the cache.
+ 
+ This is an important comcept to understand when deciding how to configure the virtual warehouse AUTO_SUSPEND parameter, which
+ specifies how long the warehouse can be inactive before snowflake suspends it. 
+
+ To prevent cache from disappering once a warehouse is suspended, you might consider keeping the warehouse running, but this
+ consumes credits.
+
+ ** Note:
+    Remember that an active warehouse incurs costs even when it is not processing any queries.
+
+General Guidelines to follow when specifying the AUTO_SUSPEND parameter for a warehouse:
+    - A warehouse decidicated only to tasks can be suspended immediately because another user is unlikely to execute queries
+    on the same warehouse.
+    
+    - A warehouse decidicated to ad-hoc querying can be suspended after about 5 minutes because the cache is not very Useful
+    with non-repetitive queries.
+
+    - A warehouse decidicated to analytical queries performed by business analyst and reporting tools can be suspended after
+    10 minutes or more, allowing users to access the cache data.

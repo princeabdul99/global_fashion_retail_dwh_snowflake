@@ -3,7 +3,7 @@
  - Create an external stage named STORES_STAGE using the GFR_INTEGRATION
  ========================================================================
  */
-
+USE WAREHOUSE GLOBAL_FASHION_RETAIL_LOAD_WH_XSMALL;
  USE DATABASE BRONZE_DB;
  USE SCHEMA EXT;
  /* Create reusable named file format */

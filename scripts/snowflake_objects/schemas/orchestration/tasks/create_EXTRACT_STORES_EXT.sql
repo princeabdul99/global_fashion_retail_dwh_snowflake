@@ -1,5 +1,5 @@
 
-USE WAREHOUSE global_fashion_retail_load_wh;
+USE WAREHOUSE global_fashion_retail_load_wh_xsmall;
 
 USE DATABASE bronze_db;
 USE SCHEMA EXT;

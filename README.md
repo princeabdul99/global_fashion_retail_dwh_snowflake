@@ -6,12 +6,13 @@ This project simulate two years of transactional data for a multinational fashio
 
 #### Specifications
 - **Data Sources**: Import data to cloud storage service system. e,g; AWS, Azure blob storage, GCP Google Cloud Storage.
-- **Ingestion,Transforming & Storing**: Extracting data from source systems and ingesting it into Snowflake, Performing data transformations and Presenting data to downstream consumers for analytics, reporting etc
+- **ELT/ETL development**: Extracting data from source systems and ingesting it into Snowflake, Performing data transformations and Presenting data to downstream consumers for analytics, reporting etc
 - **Cost Control**: Monitor warehouse consumption and find use findings to strike a good balance between improving performance and controlling cost.
 - **Optimization**: Optimize query performance by micro-partition pruning, utlize data caching and reduce data spiling.
 - **Data Governance and access control**: Snowflake role-based access control (RBAC) model, where access privileges are assigned to roles that are granted to users.
 - **CI/CD**: organize the data pipeline code in a Git repository, integrate it with Snowflake, and implement continuous integration and delivery.
 - **Augment data with LLM**: Use Cortex LLM to interpret unstructured data.
+- **Best Practices**: Design and implement data engineering solutions following best practices.
 
 ---
 ### Team
@@ -57,12 +58,14 @@ global_fashion_retail_dwh_snowflake/
 │           ├── stg/                      # Scripts for cleaning and transforming stores data using STG schema
 │           ├── dwh/                      # Scripts that normalizes the stores data from the STG using DWH schema   
 │           ├── rpt/                      # Scripts for creating analytical reports using RPT schema
+│           ├── tasks/                    # Scripts for automating pipelines
 │  
 │       ├── /transactions/
 │           ├── ext/                      # Scripts for extracting and loading stores data using EXT schema
 │           ├── stg/                      # Scripts for cleaning and transforming stores data using STG schema
 │           ├── dwh/                      # Scripts that normalizes the stores data from the STG using DWH schema   
-│           ├── rpt/                      # Scripts for creating analytical reports using RPT schema 
+│           ├── rpt/                      # Scripts for creating analytical reports using RPT schema
+│           ├── tasks/                    # Scripts for automating pipelines 
 │       ├── /...
 │
 │       ├── /orchestrations/

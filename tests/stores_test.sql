@@ -2,6 +2,14 @@ USE WAREHOUSE GLOBAL_FASHION_RETAIL_LOAD_WH_XSMALL;
 USE DATABASE BRONZE_DB;
 USE SCHEMA EXT;
 
+
+SHOW PIPES;
+
+SHOW STAGES;
+
+--- Ingest files that were already created.
+ALTER PIPE GFR_STORES_PIPE REFRESH;
+
 -- Testing: View external stage files in directory
 select *
 from directory (@STORES_STAGE);
@@ -15,6 +23,9 @@ from information_schema.load_history
 where schema_name = 'EXT' 
 and table_name = 'STORES_EXT'
 order by last_load_time desc;
+
+-- Monitoring & Troubleshooting pipe objects: check this status of the pipe 
+select system$pipe_status('GFR_STORES_PIPE');
 
 
 SELECT * FROM STORES_EXT;
@@ -54,3 +65,8 @@ GROUP BY country;
 SELECT 
     sum(numberofemployees) as total_employees, count(storename) as total_store
 FROM silver_db.STG.STORES_TBL_STG;
+
+//================ TESTING TASK HISTORY ============
+ select *
+  from table(information_schema.task_history())
+  order by scheduled_time desc;

@@ -5,7 +5,7 @@
  ========================================================================
  */
  
-USE WAREHOUSE global_fashion_retail_load_wh;
+USE WAREHOUSE global_fashion_retail_load_wh_xsmall;
 
 CREATE OR REPLACE TABLE silver_db.STG.STORES_TBL_STG (
     storeid int,

@@ -1,0 +1,67 @@
+Quick Overview:
+The project is about Designing a Scalable Data Infrastructure for Global Fashion Retail that has over 4million plus of transactional data
+and about 35 stores across 7 countries. Such as China, France, Germany, Portugal, Spain, United State and United Kingdom. 
+
+Problem: 
+The fashion retail company faced challenges in managing and analyzing its growing volume of business-critical data stored across various
+services in its AWS cloud infrastructure. The existing data management process was large manual and fragmented, leading to delays in
+generating insights, increased risk of data inconsistencies and reduces agility in decision making.
+
+Solution:
+To address these challenges, there was a need to automate the end-to-end data ingestion and integration pipeline specifically to extract
+data from AWS storage service (S3), load it into Snowflake for centralized, Scalable and high-performance analytics, transform it for 
+reporting requirements.
+
+This Solution aim to reduce data latency, enhance data quality, and empower business analyst and decision makers with timely, reliable
+insights to improve sales strategies, inventory planning and customer personalization efforts.
+
+Role: My role in this project is the Data Engineer Lead. I oversee the design and the implementation of project architecture 
+      and data flow. Development of pipelines and Orchestration.
+
+- challenges: 
+    - Large virtual warehouses consumes credits.
+    - Long-running queries and poor performance causing virtual warehouse to be active for long.
+    
+    Solution:
+        - choose appropriate virtual warehouse and continue to monitor performance and credit consumption.
+        - change warehouse size as workload changes overtime.
+        - optimize query performance to reduce amount of data they must process.
+
+
+Tools & Tech:
+    - Snowflake
+    - AWS
+    - VS-code
+    - Github
+
+
+Result & Impact:
+        - The data dev team received a possible for reducing reporting bottleneck. 
+        - There was 80% of reduction in manual data handling effort, as automated pipelines replaced repetitive ETL tasks.
+        - The snowflake integration enable the company to scale its reporting without performance degradation during peak period.
+        - Validation and automated error handling ensure cleaner data with fewer QA issues downstream.
+        - Business Team were able to generate sales and inventory reports 3times (3x) faster.
+
+
+
+Teamwork: The project simulate a team that comprise of Data Analysts that represents each country of the company's branch, Project Manager and Dev Team.
+          I worked on the project as the Data Dev Team Lead. I collaborated with PM by making sure all database and warehouse permission and access needed
+          for smooth development are granted. I also collaborated with the analyst team to ensure they get access to the right data as needed.  
+
+
+Experience Learnt:
+    - Gained hands-on experience integrating Amazon cloud services (e.g; S3, SNS/SQS) with snowflake.
+    - Learnt to design resilient, scalable pipeline that align with enterprise cloud architecture. 
+    - Developed practical skills in building snowflake schema optimized for BI tools. (e.g; star/snowflake schema) 
+    - Strengthened my understanding of data ingesting patterns using tools like Snowpipe and custom staging process. 
+    - Implemented automated deployment and monitoring using Github Actions.
+    - Built Alert system for data quality and job failure, ensuring pipeline reliability. 
+    - Worked closely with analysts and business teams to understand reporting needs and feedback loops. 
+
+    ** What I intend to do differently next time 
+    - Use modular approach by breaking down pipeline into smaller reusable component for better maintenance and testing.
+    - Incorporate automated data Validation and quality check (e.g; with dbs test) from the start. 
+    - Incorporate the use third party data integration tools like Apache Airflow and Azure data blob storage. 
+    - Setup better logging and monitoring dashboard to detect and debug issues faster.
+    - Engage business users earlier in the development process to refine data requirements and avoid rework.
+    - Introduce dynamic configuration (e.g; using metadata tables) to reduce hard coded logic and improve pipeline flexibility.

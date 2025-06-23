@@ -85,16 +85,24 @@ CREATE DATABASE gold_db;
 
 /*
   The schema within the database: 
-  'bronze' -> EXT, 
+  'bronze' -> EXT,  
   'silver' -> STG, 
   'gold'   -> DWH,
   'gold'   -> RPT.
+
+  EXT represent the extraction layer
+  STG represent the staging layer
+  DWH represent the data warehouse layer
+  RPT represent the presentation layer
+
 */
 USE DATABASE bronze_db;
 CREATE SCHEMA EXT;
+CREATE SCHEMA EXT_ORCHESTRATION;
 
 USE DATABASE silver_db;
 CREATE SCHEMA STG;
+CREATE SCHEMA ORCHESTRATION;
 
 USE DATABASE gold_db;
 CREATE SCHEMA DWH;

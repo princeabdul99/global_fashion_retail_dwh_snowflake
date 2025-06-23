@@ -3,7 +3,7 @@ USE DATABASE BRONZE_DB;
 USE SCHEMA EXT;
 
 -- display the ARN of SQS queue
-show pipes;
+
 SHOW PIPES;
 
 --- Ingest files that were already created.
@@ -151,6 +151,9 @@ WHERE TRANSACTIONTYPE = 'Return';
     
     
  //================== DWH LAYER ===========================
+USE DATABASE GOLD_DB;
+USE SCHEMA DWH;
+
 // Business Question: What is the total sale by each country?
 SELECT TOP 10
     sum(invoicetotal) as total_amount, 

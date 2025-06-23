@@ -1,0 +1,28 @@
+Orchestrating Pipelines
+The process that involves scheduling, defining dependencies, error handling and sending notifications to ensure efficient 
+execution of data pipelines steps is called data Pipeline Orchestration.
+
+Snowflake Task Feature: Used to execute command on schedule.
+
+- Snowflake tasks are user-defined objects that enable the scheduling and execution of SQL commands, stored procedures, 
+or Snowflake scripting code blocks. They can be scheduled to start executing at a specific time, repeat based on defined
+time intervals, or begin executing after a predecessors task is completed. Task can be combined with streams to support
+incremental processing.
+
+Note: Snowflake tasks are usually used for Orchestrating when you require native functionality and prefer not to add
+      third-party tools.
+
+Root task : Task that represents the beginning of the pipeline execution
+Finalizer task : Task at the very end of data pipeline.
+
+Tasks can perform actions such as:
+- writing to log table 
+- recording status or error information
+- sending email notifications
+- perform other activities to finalize the data pipeline execution.
+
+In Snowflake, pipeline Orchestration is built by creating task graphs also known as DAGS (directed acyclic graphs).
+
+A task graph is a series of tasks composed of a root task and additional tasks, organized by their dependencies.
+The task flow in a single direction, meaning that each task is a descendant of a previous task without circular
+dependencies.

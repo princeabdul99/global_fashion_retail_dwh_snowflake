@@ -7,7 +7,7 @@ USE WAREHOUSE GLOBAL_FASHION_RETAIL_LOAD_WH_XSMALL;
  USE DATABASE BRONZE_DB;
  USE SCHEMA EXT;
  /* Create reusable named file format */
- create file format CSV_FORMAT
+CREATE OR REPLACE FILE FORMAT CSV_FORMAT
     type = csv
     field_delimiter = ','
     skip_header = 1;

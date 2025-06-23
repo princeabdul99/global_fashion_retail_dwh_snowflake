@@ -105,3 +105,10 @@ CREATE STORAGE INTEGRATION GFR_INTEGRATION
  GRANT USAGE ON INTEGRATION GFR_INTEGRATION TO ROLE "GFR_DEV_TEAM";
 
 
+/*
+** Orchestration Task Execution in snowflake
+* Note: 
+* Only account administrators (users with the ACCOUNTADMIN role)  can grant the 
+* EXECUTE TASK privilege.
+*/
+ GRANT EXECUTE TASK ON ACCOUNT TO ROLE "GFR_DEV_TEAM";

@@ -5,7 +5,7 @@
  ========================================================================
  */
  
-USE WAREHOUSE global_fashion_retail_load_wh;
+USE WAREHOUSE global_fashion_retail_load_wh_xsmall;
 use database bronze_db;
 USE SCHEMA EXT;
 CREATE OR REPLACE TABLE STORES_EXT (

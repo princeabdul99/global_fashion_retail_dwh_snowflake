@@ -56,17 +56,7 @@ CREATE OR ALTER WAREHOUSE global_fashion_retail_load_wh_large
     AUTO_RESUME = true
     MIN_CLUSTER_COUNT = 1
     MAX_CLUSTER_COUNT = 1
-    SCALING_POLICY = 'STANDARD';
-
-CREATE OR ALTER WAREHOUSE global_fashion_retail_query_wh
-    WITH
-    WAREHOUSE_SIZE = 'XSMALL'
-    WAREHOUSE_TYPE = 'STANDARD'
-    AUTO_SUSPEND = 300
-    AUTO_RESUME = true
-    MIN_CLUSTER_COUNT = 1
-    MAX_CLUSTER_COUNT = 1
-    SCALING_POLICY = 'STANDARD';    
+    SCALING_POLICY = 'STANDARD';   
 
 /*
 ============================================================================================
@@ -74,21 +64,25 @@ CREATE OR ALTER WAREHOUSE global_fashion_retail_query_wh
 ============================================================================================
 Script Purpose:
   This script create a new databases after checking if it already exists.
-  * bronze_db -> stores raw external tables
-  * silver_db -> stores cleaned/transformed tables - staging tables
-  * gold_db -> stores models and final tables/Views (dynamic tables)
+  * gfr_load_db -> stores raw external tables
+  * gfr_load_db -> stores cleaned/transformed tables - staging tables
+  * gfr_query_db -> stores models and final tables/Views (dynamic tables)
+
+  * gfr_load_db -> extraction layer, staging layer, data warehouse layer
+  * gfr_query_db -> presentation layer. 
 */
 
-CREATE DATABASE bronze_db;
-CREATE DATABASE silver_db;
-CREATE DATABASE gold_db;
+
+CREATE DATABASE gfr_load_db;
+CREATE DATABASE gfr_query_db;
+
 
 /*
   The schema within the database: 
-  'bronze' -> EXT,  
-  'silver' -> STG, 
-  'gold'   -> DWH,
-  'gold'   -> RPT.
+  'gfr_load_db' -> EXT,  
+  'gfr_load_db' -> STG, 
+  'gfr_load_db'   -> DWH,
+  'gfr_query_db'   -> RPT.
 
   EXT represent the extraction layer
   STG represent the staging layer
@@ -96,14 +90,12 @@ CREATE DATABASE gold_db;
   RPT represent the presentation layer
 
 */
-USE DATABASE bronze_db;
-CREATE SCHEMA EXT;
-CREATE SCHEMA EXT_ORCHESTRATION;
+USE DATABASE gfr_load_db;
+CREATE OR REPLACE SCHEMA EXT;
+CREATE OR REPLACE SCHEMA STG;
+CREATE OR REPLACE SCHEMA DWH;
+CREATE OR REPLACE SCHEMA ORCHESTRATION;
 
-USE DATABASE silver_db;
-CREATE SCHEMA STG;
-CREATE SCHEMA ORCHESTRATION;
+USE DATABASE gfr_query_db;
+CREATE OR REPLACE SCHEMA RPT;
 
-USE DATABASE gold_db;
-CREATE SCHEMA DWH;
-CREATE SCHEMA RPT;

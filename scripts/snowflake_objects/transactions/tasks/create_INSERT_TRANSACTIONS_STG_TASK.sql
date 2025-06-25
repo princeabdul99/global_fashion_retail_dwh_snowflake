@@ -1,7 +1,15 @@
-USE WAREHOUSE global_fashion_retail_load_wh;
-USE DATABASE SILVER_DB;
-USE SCHEMA STG;
-MERGE INTO silver_db.stg.TRANSACTIONS_TBL_STG tgt
+USE WAREHOUSE global_fashion_retail_load_wh_xsmall;
+USE DATABASE gfr_load_db;
+
+USE SCHEMA ORCHESTRATION;
+
+CREATE OR REPLACE TASK MERGE_TRANSACTION_STG_TASK
+    WAREHOUSE = 'GLOBAL_FASHION_RETAIL_LOAD_WH_XSMALL'
+    AFTER COPY_TRANSACTIONS_TASKS
+WHEN
+    system$stream_has_data('gfr_load_db.ext.TRANSACTIONS_STREAM')
+AS
+MERGE INTO gfr_load_db.stg.TRANSACTIONS_TBL_STG tgt
 USING (
     SELECT 
         ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS id,
@@ -33,7 +41,7 @@ USING (
         invoicetotal,
         source_file_name, 
         load_ts 
-    FROM bronze_db.ext.TRANSACTIONS_STREAM
+    FROM gfr_load_db.ext.TRANSACTIONS_STREAM
 ) stg
 ON tgt.invoiceid = stg.invoiceid
 
@@ -88,3 +96,9 @@ WHEN NOT MATCHED THEN
         stg.source_file_name,  
         stg.load_ts
     );
+
+    // Note: New task created is suspended by default. Resume task to start executing. 
+ALTER TASK MERGE_TRANSACTION_STG_TASK RESUME;
+ALTER TASK COPY_TRANSACTIONS_TASKS RESUME;
+
+ALTER TASK COPY_TRANSACTIONS_TASKS SUSPEND;

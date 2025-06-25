@@ -6,7 +6,7 @@
  */
  
 USE WAREHOUSE global_fashion_retail_load_wh_xsmall;
-use database bronze_db;
+use database gfr_load_db;
 USE SCHEMA EXT;
 CREATE OR REPLACE TABLE STORES_EXT (
     storeid int,

@@ -5,9 +5,9 @@
  ========================================================================
  */
  
-USE WAREHOUSE global_fashion_retail_load_wh;
-
-CREATE OR REPLACE TABLE silver_db.stg.TRANSACTIONS_TBL_STG (
+USE WAREHOUSE global_fashion_retail_load_wh_xsmall;
+USE DATABASE gfr_load_db;
+CREATE OR REPLACE TABLE gfr_load_db.STG.TRANSACTIONS_TBL_STG (
     invoiceid varchar,
     line number,
     customerid int,

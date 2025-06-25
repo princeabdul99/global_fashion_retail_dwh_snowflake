@@ -4,9 +4,8 @@
  - Create the extract table for transactions in raw (csv) format
  ========================================================================
  */
- 
-USE WAREHOUSE global_fashion_retail_load_wh;
-use database bronze_db;
+USE WAREHOUSE global_fashion_retail_load_wh_xsmall;
+USE DATABASE gfr_load_db;
 USE SCHEMA EXT;
 
 CREATE OR REPLACE TABLE TRANSACTIONS_EXT (

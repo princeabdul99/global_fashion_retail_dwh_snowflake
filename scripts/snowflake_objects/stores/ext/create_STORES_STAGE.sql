@@ -4,7 +4,7 @@
  ========================================================================
  */
 USE WAREHOUSE GLOBAL_FASHION_RETAIL_LOAD_WH_XSMALL;
- USE DATABASE BRONZE_DB;
+ USE DATABASE gfr_load_db;
  USE SCHEMA EXT;
  /* Create reusable named file format */
 CREATE OR REPLACE FILE FORMAT CSV_FORMAT
@@ -15,7 +15,7 @@ CREATE OR REPLACE FILE FORMAT CSV_FORMAT
 CREATE OR REPLACE STAGE STORES_STAGE
     STORAGE_INTEGRATION = GFR_INTEGRATION
     URL = 's3://bucket-global-fashion-retail/stores/'
-    FILE_FORMAT = CSV_FORMAT;
+    FILE_FORMAT = gfr_load_db.EXT.CSV_FORMAT;
 
 -- Enabling DIRECTORY table for stage metadata
 -- Note: This is useful when you need more detailed information about files

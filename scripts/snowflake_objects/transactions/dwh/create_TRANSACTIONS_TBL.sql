@@ -1,6 +1,7 @@
 -- create a dynamic table TRANSACTIONS_TBL in the DWH schema that normalizes the data from the STG schema
-USE WAREHOUSE GLOBAL_FASHION_RETAIL_QUERY_WH;
-USE DATABASE GOLD_DB;
+
+USE WAREHOUSE global_fashion_retail_load_wh_xsmall;
+USE DATABASE gfr_load_db;
 USE SCHEMA DWH;
 CREATE OR REPLACE DYNAMIC TABLE DWH.TRANSACTIONS_TBL_DWH
     TARGET_LAG = '1 minute'
@@ -32,6 +33,6 @@ CREATE OR REPLACE DYNAMIC TABLE DWH.TRANSACTIONS_TBL_DWH
             t.load_ts,
             ROW_NUMBER() OVER (PARTITION BY invoiceid ORDER BY (SELECT NULL)) as flag_last
         
-        FROM silver_db.STG.TRANSACTIONS_TBL_STG AS t
-        LEFT JOIN silver_db.STG.STORES_TBL_STG AS s
+        FROM gfr_load_db.STG.TRANSACTIONS_TBL_STG AS t
+        LEFT JOIN gfr_load_db.STG.STORES_TBL_STG AS s
     ) t  WHERE flag_last = 1;

@@ -1,7 +1,30 @@
 
-USE WAREHOUSE global_fashion_retail_load_wh;
+USE WAREHOUSE global_fashion_retail_load_wh_xsmall;
+USE DATABASE gfr_load_db;
+USE SCHEMA ORCHESTRATION;
 
 /* Loading data from external stage into a staging table */
+
+CREATE OR REPLACE TASK COPY_TRANSACTIONS_TASKS
+    WAREHOUSE = 'GLOBAL_FASHION_RETAIL_LOAD_WH_XSMALL'
+    SCHEDULE = '10 M'
+ AS
+    COPY INTO gfr_load_db.EXT.TRANSACTIONS_EXT
+        FROM (
+             SELECT $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, metadata$filename, current_timestamp()
+            FROM @gfr_load_db.EXT.TRANSACTIONS_STAGE
+        )
+    ON_ERROR = abort_statement;
+   -- PURGE = true;
+
+-- To test a task, we can run it manually with the EXECUTE TASK command
+EXECUTE TASK COPY_TRANSACTIONS_TASKS;
+
+
+show stages;
+
+
+/*
 CREATE PIPE bronze_db.EXT.GFR_TRANSACTIONS_PIPE
     AUTO_INGEST = TRUE
     AWS_SNS_TOPIC = 'arn:aws:sns:us-east-1:448049813931:GFR_Notification'
@@ -14,7 +37,7 @@ CREATE PIPE bronze_db.EXT.GFR_TRANSACTIONS_PIPE
 --on_error = abort_statement;
 --on_error = continue;
 --purge = true;
-
+*/
 
 --- Unload Staging Table
 -- TRUNCATE TABLE TRANSACTIONS_EXT;

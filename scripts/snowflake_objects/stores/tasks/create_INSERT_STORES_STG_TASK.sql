@@ -1,18 +1,18 @@
 USE WAREHOUSE global_fashion_retail_load_wh_xsmall;
-USE DATABASE silver_db;
-USE SCHEMA STG;
+USE DATABASE gfr_load_db;
+
 USE SCHEMA ORCHESTRATION;
 
 CREATE OR REPLACE TASK MERGE_STORES_STG_TASK
     WAREHOUSE = 'GLOBAL_FASHION_RETAIL_LOAD_WH_XSMALL'
     AFTER COPY_STORES_TASKS
 WHEN
-    system$stream_has_data('bronze_db.ext.STORES_STREAM')
+    system$stream_has_data('gfr_load_db.ext.STORES_STREAM')
 AS
-    MERGE INTO silver_db.stg.STORES_TBL_STG tgt
+    MERGE INTO gfr_load_db.stg.STORES_TBL_STG tgt
     USING (
         SELECT * 
-        FROM bronze_db.ext.STORES_STREAM
+        FROM gfr_load_db.ext.STORES_STREAM
     ) stg
     ON tgt.storeid = stg.storeid
 
@@ -48,3 +48,5 @@ AS
 // Note: New task created is suspended by default. Resume task to start executing. 
 ALTER TASK MERGE_STORES_STG_TASK RESUME;
 ALTER TASK COPY_STORES_TASKS RESUME;
+
+ALTER TASK COPY_STORES_TASKS SUSPEND;

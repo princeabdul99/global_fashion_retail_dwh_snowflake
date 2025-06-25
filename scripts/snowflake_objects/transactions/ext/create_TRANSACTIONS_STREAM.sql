@@ -5,5 +5,5 @@
 -- Create a table TRANSACTION_TBL_STG in the staging layer to implement incremental ingestion.
  */
 
-CREATE STREAM TRANSACTIONS_STREAM
+CREATE OR REPLACE STREAM TRANSACTIONS_STREAM
 ON TABLE TRANSACTIONS_EXT;

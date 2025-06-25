@@ -1,18 +1,20 @@
 USE WAREHOUSE GLOBAL_FASHION_RETAIL_LOAD_WH_XSMALL;
-USE DATABASE BRONZE_DB;
+USE DATABASE gfr_load_db;
 USE SCHEMA EXT;
 
 
 SHOW PIPES;
 
-SHOW STAGES;
+SHOW INTEGRATIONS;
 
---- Ingest files that were already created.
-ALTER PIPE GFR_STORES_PIPE REFRESH;
+SHOW STAGES;
 
 -- Testing: View external stage files in directory
 select *
 from directory (@STORES_STAGE);
+
+-- refresh directory table manually
+alter stage STORES_STAGE refresh;
 
 --  Testing: View list of files in the external stage
 list @STORES_STAGE;
@@ -26,6 +28,8 @@ order by last_load_time desc;
 
 -- Monitoring & Troubleshooting pipe objects: check this status of the pipe 
 select system$pipe_status('GFR_STORES_PIPE');
+--- Ingest files that were already created.
+ALTER PIPE GFR_STORES_PIPE REFRESH;
 
 
 SELECT * FROM STORES_EXT;

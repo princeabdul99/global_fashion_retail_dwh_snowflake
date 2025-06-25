@@ -1,5 +1,6 @@
 USE WAREHOUSE GLOBAL_FASHION_RETAIL_LOAD_WH;
-USE DATABASE BRONZE_DB;
+
+USE DATABASE gfr_load_db;
 USE SCHEMA EXT;
 
 -- display the ARN of SQS queue
@@ -42,10 +43,16 @@ select *
   start_time => dateadd(day, -7, current_timestamp())));
 
 
-SELECT TOP 100 * FROM bronze_db.EXT.TRANSACTIONS_EXT;
+SELECT TOP 100 * FROM gfr_load_db.EXT.TRANSACTIONS_EXT;
 
-SELECT * FROM bronze_db.EXT.TRANSACTIONS_STREAM;
+TRUNCATE TABLE gfr_load_db.EXT.TRANSACTIONS_EXT;
 
+SELECT * FROM gfr_load_db.EXT.TRANSACTIONS_STREAM;
+
+//================ TESTING TASK HISTORY ============
+ select *
+  from table(information_schema.task_history())
+  order by scheduled_time desc;
 
 SELECT TOP 100
     ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS id,
@@ -78,7 +85,7 @@ SELECT TOP 100
     source_file_name, 
     load_ts
 
-FROM bronze_db.EXT.TRANSACTIONS_EXT
+FROM gfr_load_db.EXT.TRANSACTIONS_EXT
 WHERE TRANSACTIONTYPE = 'Return' AND INVOICEID = 'RET-US-001-03856698';
 
 
@@ -86,14 +93,14 @@ WHERE TRANSACTIONTYPE = 'Return' AND INVOICEID = 'RET-US-001-03856698';
 SELECT 
     ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS generated_id,
     invoiceid
-FROM bronze_db.EXT.TRANSACTIONS_EXT
+FROM gfr_load_db.EXT.TRANSACTIONS_EXT
 LIMIT 100;
 
 WITH test AS (
     SELECT 
         ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS id,
         invoiceid
-    FROM bronze_db.EXT.TRANSACTIONS_EXT
+    FROM gfr_load_db.EXT.TRANSACTIONS_EXT
 )
 SELECT * FROM test ORDER BY id LIMIT 100;
 
@@ -102,24 +109,24 @@ SELECT * FROM test ORDER BY id LIMIT 100;
 
 
 //================== STAGING LAYER ===========================
-USE DATABASE SILVER_DB;
+USE DATABASE gfr_load_db;
 USE SCHEMA STG;
 // Querying STORES_STG staging table
-select * from silver_db.STG.TRANSACTIONS_TBL_STG;
+select * from gfr_load_db.STG.TRANSACTIONS_TBL_STG;
 
-SELECT TOP 100 * FROM silver_db.STG.TRANSACTIONS_TBL_STG;
+SELECT TOP 100 * FROM gfr_load_db.STG.TRANSACTIONS_TBL_STG;
 
-TRUNCATE TABLE silver_db.STG.TRANSACTIONS_TBL_STG;
+TRUNCATE TABLE gfr_load_db.STG.TRANSACTIONS_TBL_STG;
 
 // ============ TRANSACTIONS  ANALYSIS ================
 // Task 1: Create separate table for sold items
 // Task 2: Create a separate table for return items
 SELECT TOP 100 * 
-FROM silver_db.STG.TRANSACTIONS_TBL_STG
+FROM gfr_load_db.STG.TRANSACTIONS_TBL_STG
 WHERE TRANSACTIONTYPE = 'Sale';
 
 SELECT TOP 100 * 
-FROM silver_db.STG.TRANSACTIONS_TBL_STG
+FROM gfr_load_db.STG.TRANSACTIONS_TBL_STG
 WHERE TRANSACTIONTYPE = 'Return';
 
 // Task 3: Create a separate sales table for invoice total
@@ -130,7 +137,7 @@ WHERE TRANSACTIONTYPE = 'Return';
         SELECT
         *,
         ROW_NUMBER() OVER (PARTITION BY invoiceid ORDER BY date desc) as flag_last,
-        FROM silver_db.STG.TRANSACTIONS_TBL_STG
+        FROM gfr_load_db.STG.TRANSACTIONS_TBL_STG
     ) t ;
     //WHERE flag_last = 1 AND t.transactiontype = 'Sale';
 
@@ -139,13 +146,13 @@ WHERE TRANSACTIONTYPE = 'Return';
         SELECT
         *,
         ROW_NUMBER() OVER (PARTITION BY invoiceid ORDER BY date desc) as flag_last,
-        FROM silver_db.STG.TRANSACTIONS_TBL_STG
+        FROM gfr_load_db.STG.TRANSACTIONS_TBL_STG
     ) t WHERE flag_last = 1 AND t.transactiontype = 'Return';
 
     // Task 5: What is the total sale by each country?
     SELECT 
       sum(invoicetotal) as total_amount, currency as country
-    FROM silver_db.STG.TRANSACTIONS_TBL_STG
+    FROM gfr_load_db.STG.TRANSACTIONS_TBL_STG
     WHERE transactiontype = 'Sale'
     GROUP BY currency;       
     

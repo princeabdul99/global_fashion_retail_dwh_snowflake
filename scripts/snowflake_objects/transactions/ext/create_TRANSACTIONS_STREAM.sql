@@ -5,5 +5,7 @@
 -- Create a table TRANSACTION_TBL_STG in the staging layer to implement incremental ingestion.
  */
 
+USE DATABASE gfr_load_db;
+ USE SCHEMA EXT;
 CREATE OR REPLACE STREAM TRANSACTIONS_STREAM
 ON TABLE TRANSACTIONS_EXT;

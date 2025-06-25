@@ -112,3 +112,15 @@ CREATE STORAGE INTEGRATION GFR_INTEGRATION
 * EXECUTE TASK privilege.
 */
  GRANT EXECUTE TASK ON ACCOUNT TO ROLE "GFR_DEV_TEAM";
+
+ /*
+** Sending Email Notification in snowflake
+* Note: 
+* Only account administrators (users with the ACCOUNTADMIN role)  can grant the 
+* EXECUTE TASK privilege.
+*/
+CREATE NOTIFICATION INTEGRATION GFR_PIPELINE_EMAIL_INT
+    TYPE = email
+    ENABLED = true;
+
+ GRANT USAGE ON INTEGRATION GFR_PIPELINE_EMAIL_INT TO ROLE "GFR_DEV_TEAM";   

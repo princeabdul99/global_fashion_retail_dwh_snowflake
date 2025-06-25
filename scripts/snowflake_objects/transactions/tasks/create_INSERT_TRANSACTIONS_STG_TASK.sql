@@ -9,93 +9,110 @@ CREATE OR REPLACE TASK MERGE_TRANSACTION_STG_TASK
 WHEN
     system$stream_has_data('gfr_load_db.ext.TRANSACTIONS_STREAM')
 AS
-MERGE INTO gfr_load_db.stg.TRANSACTIONS_TBL_STG tgt
-USING (
-    SELECT 
-        ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS id,
-        invoiceid,
-        line,
-        customerid,
-        productid,
-        CASE WHEN size IS NULL THEN 'n/a' 
-                ELSE size
-        END AS size,
-        CASE WHEN color IS NULL THEN 'n/a' 
-                ELSE color
-        END AS color,
-        unitprice,
-        quantity,
-        date,
-        discount,
-        linetotal,
-        storeid,
-        employeeid,
-        currency,
-        currencysymbol, 
-        CASE WHEN RIGHT(sku, 2) = '--' THEN LEFT(sku, LEN(sku) -2)
-            WHEN RIGHT(sku, 1) = '-' THEN LEFT(sku, LEN(sku) -1)
-            ELSE sku
-        END AS sku,    
-        transactiontype,
-        paymentmethod,
-        invoicetotal,
-        source_file_name, 
-        load_ts 
-    FROM gfr_load_db.ext.TRANSACTIONS_STREAM
-) stg
-ON tgt.invoiceid = stg.invoiceid
+    BEGIN
+        MERGE INTO gfr_load_db.stg.TRANSACTIONS_TBL_STG tgt
+        USING (
+            WITH deduplicated AS (
+                 SELECT 
+                -- ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) AS id,
+                ROW_NUMBER() OVER (PARTITION BY invoiceid, productid ORDER BY DATE DESC) as flag_last,
+                invoiceid,
+                line,
+                customerid,
+                productid,
+                CASE WHEN size IS NULL THEN 'n/a' 
+                        ELSE size
+                END AS size,
+                CASE WHEN color IS NULL THEN 'n/a' 
+                        ELSE color
+                END AS color,
+                unitprice,
+                quantity,
+                date,
+                discount,
+                linetotal,
+                storeid,
+                employeeid,
+                currency,
+                currencysymbol, 
+                CASE WHEN RIGHT(sku, 2) = '--' THEN LEFT(sku, LEN(sku) -2)
+                    WHEN RIGHT(sku, 1) = '-' THEN LEFT(sku, LEN(sku) -1)
+                    ELSE sku
+                END AS sku,    
+                transactiontype,
+                paymentmethod,
+                invoicetotal,
+                source_file_name, 
+                load_ts 
+            FROM gfr_load_db.ext.TRANSACTIONS_STREAM
+            )
 
-WHEN MATCHED THEN
-    UPDATE SET
-        tgt.invoiceid = stg.invoiceid,
-        tgt.line = stg.line,
-        tgt.customerid = stg.customerid,
-        tgt.productid = stg.productid,
-        tgt.size = stg.size,
-        tgt.color = stg.color,
-        tgt.unitprice = stg.unitprice,
-        tgt.quantity = stg.quantity,
-        tgt.date = stg.date,
-        tgt.discount = stg.discount,
-        tgt.linetotal = stg.linetotal,
-        tgt.storeid = stg.storeid,
-        tgt.employeeid = stg.employeeid,
-        tgt.currency = stg.currency,
-        tgt.currencysymbol = stg.currencysymbol,
-        tgt.sku = stg.sku,
-        tgt.transactiontype = stg.transactiontype,
-        tgt.paymentmethod = stg.paymentmethod,
-        tgt.invoicetotal = stg.invoicetotal,
-        tgt.source_file_name = stg.source_file_name,
-        tgt.load_ts = stg.load_ts
+            SELECT * FROM DEDUPLICATED WHERE flag_last = 1
+           
+        ) stg 
+        ON tgt.invoiceid = stg.invoiceid AND tgt.line = stg.line AND tgt.productid = stg.productid
 
-WHEN NOT MATCHED THEN
-    INSERT (
-        invoiceid, line, customerid, productid, size, color, unitprice, quantity, date, discount, linetotal, 
-        storeid, employeeid, currency, currencysymbol, sku, transactiontype, paymentmethod, invoicetotal, source_file_name, load_ts)
-    VALUES (
-        stg.invoiceid,  
-        stg.line,  
-        stg.customerid, 
-        stg.productid, 
-        stg.size,  
-        stg.color,  
-        stg.unitprice,  
-        stg.quantity,
-        stg.date,
-        stg.discount,
-        stg.linetotal,
-        stg.storeid,
-        stg.employeeid,
-        stg.currency,
-        stg.currencysymbol,
-        stg.sku,
-        stg.transactiontype,
-        stg.paymentmethod,
-        stg.invoicetotal,
-        stg.source_file_name,  
-        stg.load_ts
-    );
+        WHEN MATCHED THEN
+            UPDATE SET
+                tgt.invoiceid = stg.invoiceid,
+                tgt.line = stg.line,
+                tgt.customerid = stg.customerid,
+                tgt.productid = stg.productid,
+                tgt.size = stg.size,
+                tgt.color = stg.color,
+                tgt.unitprice = stg.unitprice,
+                tgt.quantity = stg.quantity,
+                tgt.date = stg.date,
+                tgt.discount = stg.discount,
+                tgt.linetotal = stg.linetotal,
+                tgt.storeid = stg.storeid,
+                tgt.employeeid = stg.employeeid,
+                tgt.currency = stg.currency,
+                tgt.currencysymbol = stg.currencysymbol,
+                tgt.sku = stg.sku,
+                tgt.transactiontype = stg.transactiontype,
+                tgt.paymentmethod = stg.paymentmethod,
+                tgt.invoicetotal = stg.invoicetotal,
+                tgt.source_file_name = stg.source_file_name,
+                tgt.load_ts = stg.load_ts
+
+        WHEN NOT MATCHED THEN
+            INSERT (
+                invoiceid, line, customerid, productid, size, color, unitprice, quantity, date, discount, linetotal, 
+                storeid, employeeid, currency, currencysymbol, sku, transactiontype, paymentmethod, invoicetotal, source_file_name, load_ts)
+            VALUES (
+                stg.invoiceid,  
+                stg.line,  
+                stg.customerid, 
+                stg.productid, 
+                stg.size,  
+                stg.color,  
+                stg.unitprice,  
+                stg.quantity,
+                stg.date,
+                stg.discount,
+                stg.linetotal,
+                stg.storeid,
+                stg.employeeid,
+                stg.currency,
+                stg.currencysymbol,
+                stg.sku,
+                stg.transactiontype,
+                stg.paymentmethod,
+                stg.invoicetotal,
+                stg.source_file_name,  
+                stg.load_ts
+            );
+            
+        INSERT INTO GFR_PIPELINES_LOG
+        SELECT
+            SYSTEM$TASK_RUNTIME_INFO('CURRENT_TASK_GRAPH_RUN_GROUP_ID'),
+            SYSTEM$TASK_RUNTIME_INFO('CURRENT_ROOT_TASK_NAME'),
+            SYSTEM$TASK_RUNTIME_INFO('CURRENT_TASK_NAME'),
+            CURRENT_TIMESTAMP(),
+            :SQLROWCOUNT;
+
+    END;
 
     // Note: New task created is suspended by default. Resume task to start executing. 
 ALTER TASK MERGE_TRANSACTION_STG_TASK RESUME;

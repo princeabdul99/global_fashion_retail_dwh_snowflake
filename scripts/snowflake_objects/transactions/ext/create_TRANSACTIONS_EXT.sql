@@ -8,7 +8,7 @@ USE WAREHOUSE global_fashion_retail_load_wh_xsmall;
 USE DATABASE gfr_load_db;
 USE SCHEMA EXT;
 
-CREATE OR REPLACE TABLE TRANSACTIONS_EXT (
+CREATE OR ALTER TABLE TRANSACTIONS_EXT (
     invoiceid varchar,
     line number,
     customerid int,

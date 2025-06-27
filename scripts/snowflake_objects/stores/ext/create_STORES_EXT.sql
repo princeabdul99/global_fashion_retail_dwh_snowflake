@@ -8,7 +8,7 @@
 USE WAREHOUSE global_fashion_retail_load_wh_xsmall;
 use database gfr_load_db;
 USE SCHEMA EXT;
-CREATE OR REPLACE TABLE STORES_EXT (
+CREATE OR ALTER TABLE STORES_EXT (
     storeid int,
     country varchar,
     city varchar,

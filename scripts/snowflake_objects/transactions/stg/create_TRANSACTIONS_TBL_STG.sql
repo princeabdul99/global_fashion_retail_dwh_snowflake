@@ -8,7 +8,7 @@
 USE WAREHOUSE global_fashion_retail_load_wh_xsmall;
 USE DATABASE gfr_load_db;
 USE SCHEMA STG;
-CREATE OR REPLACE TABLE TRANSACTIONS_TBL_STG (
+CREATE OR ALTER TABLE TRANSACTIONS_TBL_STG (
     invoiceid varchar,
     line number,
     customerid int,

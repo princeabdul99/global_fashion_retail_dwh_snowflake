@@ -6,11 +6,15 @@ Step Number : 1
 Description : New transactions csv files arrives in the object storage location. (AWS S3 bucket)
 Consideration for orchestration : This happens externally and we have no control over it in the data pipeline.
 
-Step Number : 2
+Step Number : 2 (deprecated)
 Description : Event trigger is used to notify pipeline when data arrive storage location. The event execute the 
               COPY INTO command to copy content of the newly arrived files into TRANSACTIONS_EXT table in the extraction layer  
 Consideration for orchestration : The notification system detects and track changes automatically, so we don't have to do
                                   anything specific in the data pipeline.  
+
+Step Number : 2
+Description : The COPY INTO command is executed to copy content of the newly arrived files into TRANSACTIONS_EXT table in the extraction layer  
+Consideration for orchestration : This step must be automated with a task. 
 
 Step Number : 3
 Description : The stream named TRANSACTIONS_STREAM keeps track of new data on TRANSACTIONS_EXT table

@@ -52,7 +52,11 @@ Row Values: ["RET-US-001-03856417", 1, 8399, 12917, "G", "PINK", 27.5, 1, 20120,
    */
 
 
-SELECT TOP 100 * FROM gfr_load_db.EXT.TRANSACTIONS_EXT WHERE TRANSACTIONTYPE = 'Return' AND INVOICEID = 'RET-US-001-03856417';
+SELECT TOP 100 * 
+FROM gfr_load_db.EXT.TRANSACTIONS_EXT 
+WHERE TRANSACTIONTYPE = 'Return' 
+AND INVOICEID = 'RET-US-001-03856417';
+
 
 SELECT  TOP 100 * FROM gfr_load_db.EXT.TRANSACTIONS_STREAM;
 
@@ -271,9 +275,25 @@ USE SCHEMA DWH;
 // Business Question: What is the total sale by each country?
 SELECT TOP 10
     sum(invoicetotal) as total_amount, 
-    currency 
-FROM gfr_load_db.DWH.TRANSACTIONS_TBL
-GROUP BY currency;
+     country, 
+FROM gfr_load_db.DWH.TRANSACTIONS_TBL_DWH
+GROUP BY country;
+
+SELECT TOP 10
+    *
+FROM gfr_load_db.DWH.TRANSACTIONS_TBL_DWH
+WHERE country = 'España';
+
+    SELECT 
+      sum(invoicetotal) as total_amount, currency as country, 
+    FROM gfr_load_db.DWH.TRANSACTIONS_TBL_DWH
+    WHERE transactiontype = 'Sale'
+    GROUP BY currency;
+
+
+SELECT TOP 100 * 
+FROM gfr_load_db.DWH.TRANSACTIONS_TBL_DWH;
+
 
 //================ TESTING TASK HISTORY ============
  select *

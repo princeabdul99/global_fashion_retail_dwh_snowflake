@@ -124,3 +124,25 @@ CREATE NOTIFICATION INTEGRATION GFR_PIPELINE_EMAIL_INT
     ENABLED = true;
 
  GRANT USAGE ON INTEGRATION GFR_PIPELINE_EMAIL_INT TO ROLE "GFR_DEV_TEAM";   
+
+ /* 
+ ** Create an API Integration
+ * This provide details about how Snowflake interacts with the Git repository API using git_https_api as the provider
+  Note:
+    Only account administrators (or users with the ACCOUNTADMIN role) should create or execute this code
+  */
+CREATE OR REPLACE API INTEGRATION GFR_API_INTEGRATION_GIT
+  API_PROVIDER = git_https_api
+  -- replace your git account in the next line
+  API_ALLOWED_PREFIXES = ('https://<your-git-host>/<your-git-account>')
+  ALLOWED_AUTHENTICATION_SECRETS = (GFR_SECRET_GIT)
+  ENABLED = TRUE;  
+
+GRANT USAGE ON INTEGRATION GFR_API_INTEGRATION_GIT TO ROLE "GFR_PM_ROLE";
+GRANT USAGE ON INTEGRATION GFR_API_INTEGRATION_GIT TO ROLE "GFR_DEV_TEAM";
+
+GRANT USAGE ON SECRET GFR_SECRET_GIT TO ROLE "GFR_DEV_TEAM";
+
+GRANT WRITE ON GIT REPOSITORY GFR_DWH_PROJECT TO ROLE "GFR_DEV_TEAM";
+GRANT READ ON GIT REPOSITORY GFR_DWH_PROJECT TO ROLE "GFR_DEV_TEAM";
+

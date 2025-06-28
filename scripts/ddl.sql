@@ -18,6 +18,8 @@ Script Purpose:
   have proper permission before running this script.
 */
 
+USE ROLE GGFR_PM_ROLE;
+
 CREATE OR ALTER WAREHOUSE global_fashion_retail_load_wh_xsmall
     WITH
     WAREHOUSE_SIZE = 'XSMALL'
@@ -72,6 +74,7 @@ Script Purpose:
   * gfr_query_db -> presentation layer. 
 */
 
+USE ROLE GFR_PM_ROLE;
 
 CREATE DATABASE gfr_load_db;
 CREATE DATABASE gfr_query_db;
@@ -90,12 +93,32 @@ CREATE DATABASE gfr_query_db;
   RPT represent the presentation layer
 
 */
+
+
+USE DATABASE gfr_query_db;
+CREATE OR REPLACE SCHEMA RPT;
+
+
+
 USE DATABASE gfr_load_db;
 CREATE OR REPLACE SCHEMA EXT;
 CREATE OR REPLACE SCHEMA STG;
 CREATE OR REPLACE SCHEMA DWH;
 CREATE OR REPLACE SCHEMA ORCHESTRATION;
+CREATE OR REPLACE SCHEMA GIT_INTEGRATION; 
 
-USE DATABASE gfr_query_db;
-CREATE OR REPLACE SCHEMA RPT;
+CREATE OR REPLACE SECRET GFR_SECRET_GIT
+  type = password
+  username = '<your-git-username>'
+  password = '<your-git-password>'
 
+/*
+** Create Git Repository Stage
+* This exposes the files in the repository to snowflake
+*/
+CREATE OR REPLACE GIT REPOSITORY GFR_DWH_PROJECT
+  API_INTEGRATION = GFR_API_INTEGRATION_GIT
+  GIT_CREDENTIALS = GFR_SECRET_GIT
+  -- replace the URL to your repository in the next line
+  ORIGIN = 'https://<your-git-host>/<your-git-account>/GFR_DWH_SF.git';
+  

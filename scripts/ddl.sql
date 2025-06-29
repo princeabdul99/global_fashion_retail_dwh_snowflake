@@ -18,7 +18,7 @@ Script Purpose:
   have proper permission before running this script.
 */
 
-USE ROLE GGFR_PM_ROLE;
+USE ROLE GFR_PM_ROLE;
 
 CREATE OR ALTER WAREHOUSE global_fashion_retail_load_wh_xsmall
     WITH
@@ -76,8 +76,8 @@ Script Purpose:
 
 USE ROLE GFR_PM_ROLE;
 
-CREATE DATABASE gfr_load_db;
-CREATE DATABASE gfr_query_db;
+CREATE OR ALTER DATABASE gfr_load_db;
+CREATE OR ALTER DATABASE gfr_query_db;
 
 
 /*

@@ -14,7 +14,7 @@ Script Purpose:
   have proper permission before running this script.
 */
 
-
+USE ROLE GFR_PM_ROLE;
 -- ========================================
 -- Grant usage privileges to DEV TEAM Role
 -- ========================================
@@ -46,7 +46,7 @@ GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA GIT_INTEGRATION TO ROLE "GFR_DEV_TE
 
 
 
-use database gfr_query_db; // use database gold
+use database gfr_query_db; // For Presentation Layer
 GRANT ALL PRIVILEGES ON SCHEMA RPT TO ROLE "GFR_DEV_TEAM";
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA RPT TO ROLE "GFR_DEV_TEAM";
 

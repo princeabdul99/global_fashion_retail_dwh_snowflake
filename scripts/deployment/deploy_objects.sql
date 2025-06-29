@@ -43,4 +43,4 @@ execute immediate from '/scripts/snowflake_objects/orchestration/pipeline_end_ta
 -- snow sql -q "ALTER GIT REPOSITORY GFR_LOAD_DB.GIT_INTEGRATION.GFR_DWH_PROJECT FETCH"
 -- snow sql -q "EXECUTE IMMEDIATE FROM @GFR_LOAD_DB.GIT_INTEGRATION.GFR_DWH_PROJECT/branches/main/global_fashion_retail_dwh_snowflake/scripts/deployment/deploy_objects.sql"
 
-snow sql -q "EXECUTE IMMEDIATE FROM @GFR_LOAD_DB.GIT_INTEGRATION.GFR_DWH_PROJECT/branches/main/scripts/deployment/deploy_objects.sql"
+-- snow sql -q "EXECUTE IMMEDIATE FROM @GFR_LOAD_DB.GIT_INTEGRATION.GFR_DWH_PROJECT/branches/main/scripts/deployment/deploy_objects.sql"

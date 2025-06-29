@@ -3,8 +3,6 @@ USE DATABASE GFR_LOAD_DB;
 USE SCHEMA ORCHESTRATION;
 
 
--- To test a task, we can run it manually with the EXECUTE TASK command
-EXECUTE TASK GFR_PIPELINES_START_TASK;
 -- suspend tasks  
 ALTER TASK GFR_PIPELINES_START_TASK SUSPEND;
 ALTER TASK COPY_STORES_TASKS SUSPEND;
@@ -15,8 +13,5 @@ ALTER TASK COPY_TRANSACTIONS_TASKS UNSET SCHEDULE;
 
 
 
-
-
-
 -- snow sql -q "ALTER GIT REPOSITORY GFR_LOAD_DB.GIT_INTEGRATION.GFR_DWH_PROJECT FETCH"
--- snow sql -q "EXECUTE IMMEDIATELY FROM @GFR_LOAD_DB.GIT_INTEGRATION.GFR_DWH_PROJECT/branches/main/global_fashion_retail_dwh_snowflake/scripts/deployment/suspend_tasks.sql;"
+-- snow sql -q "EXECUTE IMMEDIATE FROM @GFR_LOAD_DB.GIT_INTEGRATION.GFR_DWH_PROJECT/branches/main/scripts/deployment/suspend_tasks.sql" --warehouse "GLOBAL_FASHION_RETAIL_LOAD_WH_XSMALL";

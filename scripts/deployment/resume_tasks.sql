@@ -18,7 +18,5 @@ ALTER TASK COPY_TRANSACTIONS_TASKS
 
 
 
-
-
 -- snow sql -q "ALTER GIT REPOSITORY GFR_LOAD_DB.GIT_INTEGRATION.GFR_DWH_PROJECT FETCH"
--- snow sql -q "EXECUTE IMMEDIATELY FROM @GFR_LOAD_DB.GIT_INTEGRATION.GFR_DWH_PROJECT/branches/main/global_fashion_retail_dwh_snowflake/scripts/deployment/resume_tasks.sql;"
+-- snow sql -q "EXECUTE IMMEDIATE FROM @GFR_LOAD_DB.GIT_INTEGRATION.GFR_DWH_PROJECT/branches/main/scripts/deployment/resume_tasks.sql" --warehouse "GLOBAL_FASHION_RETAIL_LOAD_WH_XSMALL";

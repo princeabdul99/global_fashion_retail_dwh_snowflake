@@ -53,27 +53,35 @@ global_fashion_retail_dwh_snowflake/
 │
 ├── scripts/                              # SQL scripts for ETL and transformations
 │   ├── snowflake_objects/
+│       ├── /orchestration/
+│           ├── stores/                   # Tasks for ELT on stores data 
+│           ├── transitions/              # Tasks for ELT on transactions data 
+│           ├── .../              
+│           ├── pipeline_end_task.sql     # End task and send email notification   
+│           ├── pipeline_log.sql          # Tasks log
+│           ├── pipeline_start_task.sql   # Start task and send email notification
+|
 │       ├── /stores/
 │           ├── ext/                      # Scripts for extracting and loading stores data using EXT schema
 │           ├── stg/                      # Scripts for cleaning and transforming stores data using STG schema
 │           ├── dwh/                      # Scripts that normalizes the stores data from the STG using DWH schema   
 │           ├── rpt/                      # Scripts for creating analytical reports using RPT schema
-│           ├── tasks/                    # Scripts for automating pipelines
 │  
 │       ├── /transactions/
 │           ├── ext/                      # Scripts for extracting and loading stores data using EXT schema
 │           ├── stg/                      # Scripts for cleaning and transforming stores data using STG schema
 │           ├── dwh/                      # Scripts that normalizes the stores data from the STG using DWH schema   
 │           ├── rpt/                      # Scripts for creating analytical reports using RPT schema
-│           ├── tasks/                    # Scripts for automating pipelines 
 │       ├── /...
 │
-│       ├── /orchestrations/
-│           ├── tasks/                    # Scripts for automating pipelines
+│   ├── deployment/
+│       ├── deploy_objects.sql            # Excute continuous integration with github
+│       ├── resume_tasks.sql              # Resume orchestration pipeline task
+│       ├── suspend_tasks.sql             # Suspend orchestration pipeline tasks
 │
-│   ├── access_control.sql/               # Script for Granting Privileges and Role access control
-│   ├── setup.sq/                         # Script for creating project team roles, users and assign role privileges.
-│   ├── dwh_init.sql                      # Script for creating virtual warehouses, databases and schemas . 
+│   ├── rbac.sql                          # Script for Granting Privileges and Role access control
+│   ├── setup.sql                         # Script for creating project team roles, users and assign role privileges.
+│   ├── ddl.sql                           # Script for creating virtual warehouses, databases and schemas . 
 │
 ├── tests/                                # Test scripts and quality files
 │

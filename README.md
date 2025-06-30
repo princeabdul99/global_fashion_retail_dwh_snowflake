@@ -5,7 +5,7 @@ This project simulate two years of transactional data for a multinational fashio
 🇺🇸 United States | 🇨🇳 China | 🇩🇪 Germany | 🇬🇧 United Kingdom | 🇫🇷 France | 🇪🇸 Spain | 🇵🇹 Portugal 
 
 #### Specifications
-- **Data Sources**: Import data to cloud storage service system. e,g; AWS, Azure blob storage, GCP Google Cloud Storage.
+- **Data Sources**: Import data to cloud storage service system. e,g; AWS, Web Api (https://open.er-api.com/v6/latest/usd).
 - **ELT/ETL development**: Extracting data from source systems and ingesting it into Snowflake, Performing data transformations and Presenting data to downstream consumers for analytics, reporting etc
 - **Cost Control**: Monitor warehouse consumption and find use findings to strike a good balance between improving performance and controlling cost.
 - **Optimization**: Optimize query performance by micro-partition pruning, utlize data caching and reduce data spiling.
@@ -19,16 +19,16 @@ This project simulate two years of transactional data for a multinational fashio
 The project also simulate team of Data Engineer and Analyst to design and develop the scalable
 data infrasture.
 
-* gfr_pm - the project manager user
-* gfr_dev_lead - the data enginer team lead
-* gfr_ba_lead - the business analyst team lead
-* gfr_ba_us - the analyst for United State region
-* gfr_ba_cn - the analyst for China region
-* gfr_ba_de - the analyst for Germany region
-* gfr_ba_gb - the analyst for United Kingdom region
-* gfr_ba_fr - the analyst for France region
-* gfr_ba_es - the analyst for Spain region
-* gfr_ba_pt - the analyst for Portugal region
+* 🤵 gfr_pm - the project manager user
+* 🧔 gfr_dev_lead - the data enginer team lead
+* 👩‍🦱 gfr_ba_lead - the business analyst team lead
+* 👱‍♀️ gfr_ba_us - the analyst for United State region
+* 👨‍🦱 gfr_ba_cn - the analyst for China region
+* 👱‍♂️ gfr_ba_de - the analyst for Germany region
+* 👨‍🦲 gfr_ba_gb - the analyst for United Kingdom region
+* 👨‍🦱 gfr_ba_fr - the analyst for France region
+* 👩‍🦱 gfr_ba_es - the analyst for Spain region
+* 👨‍🦱 gfr_ba_pt - the analyst for Portugal region
 
 
 

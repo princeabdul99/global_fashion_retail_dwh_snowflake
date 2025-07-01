@@ -1,8 +1,15 @@
 # Designing a Scalable Data Infrastructure for Global Fashion Retail
-This project simulate two years of transactional data for a multinational fashion retailer with 
-- **4+ million sales records**
+Led the design and implementation of a scalable, cloud-native data infrastructure to support centralized analytics for a global fashion retailer handling over 
+- **4+ million transactions records**
 - **35 Stores** accross 7 countries: 
-🇺🇸 United States | 🇨🇳 China | 🇩🇪 Germany | 🇬🇧 United Kingdom | 🇫🇷 France | 🇪🇸 Spain | 🇵🇹 Portugal 
+🇺🇸 United States | 🇨🇳 China | 🇩🇪 Germany | 🇬🇧 United Kingdom | 🇫🇷 France | 🇪🇸 Spain | 🇵🇹 Portugal
+
+#### Challenge
+The company’s existing data management process was heavily manual, fragmented, and slow—leading to delayed insights, inconsistent reporting, and reactive decision-making.
+
+#### Solution
+Architected and implemented an automated data pipeline to extract raw data from **AWS S3**, ingest into **Snowflake**, and transform it into optimized reporting models. This enabled **real-time analytics**, reduced data latency, and ensured high data quality across countries.
+
 
 #### Specifications
 - **Data Sources**: Import data to cloud storage service system. e,g; AWS, Web Api (https://open.er-api.com/v6/latest/usd).
@@ -13,6 +20,13 @@ This project simulate two years of transactional data for a multinational fashio
 - **CI/CD**: organize the data pipeline code in a Git repository, integrate it with Snowflake, and implement continuous integration and delivery.
 - **Augment data with LLM**: Use Cortex LLM to interpret unstructured data.
 - **Best Practices**: Design and implement data engineering solutions following best practices.
+
+
+#### Team & Collaboration
+Worked closely with:
+- Data analysts from each branch country to align data outputs with local reporting needs.
+- Project managers to manage security, access, and timelines.
+- Cross-functional dev team to ensure smooth implementation and continuous delivery using GitHub Actions.
 
 ---
 ### Team

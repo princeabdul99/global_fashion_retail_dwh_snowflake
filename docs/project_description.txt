@@ -1,3 +1,5 @@
+Title: Scalable Data Infrastructure for Global Fashion Retail
+
 Quick Overview:
 The project is about Designing a Scalable Data Infrastructure for Global Fashion Retail that has over 4million plus of transactional data
 and about 35 stores across 7 countries. Such as China, France, Germany, Portugal, Spain, United State and United Kingdom. 
